@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import BrandLogo from "@/components/BrandLogo";
 import {
   Phone,
-  ArrowLeft,
   ChefHat,
   ShoppingBag,
   ShieldCheck,
@@ -61,6 +60,11 @@ interface Reservation {
 }
 
 export default function CuentaPage() {
+  // ── CANVAS FRAME-SEQUENCE ANIMATION STATE ──
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const imagesRef = useRef<HTMLImageElement[]>([]);
+  const frameIndexRef = useRef(0);
+
   // Mode: Auth or Profile
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
   const [activeRoleTab, setActiveRoleTab] = useState<"cocinero" | "comprador" | "admin">("cocinero");
@@ -108,6 +112,120 @@ export default function CuentaPage() {
   // Rating Modal State
   const [ratingResId, setRatingResId] = useState<string | null>(null);
   const [ratingStars, setRatingStars] = useState(5);
+
+  // ── 150-FRAME BACKGROUND ANIMATION LOOP ──
+  useEffect(() => {
+    const totalFrames = 150;
+    const images: HTMLImageElement[] = [];
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const pad = (n: number) => String(n).padStart(3, "0");
+
+    // Load Frame 1 immediately
+    const frame1 = new Image();
+    frame1.src = `/frames-login/frame_001.png`;
+    images[0] = frame1;
+
+    frame1.onload = () => {
+      drawCanvasFrame(frame1);
+    };
+
+    // Preload remaining frames 2..150
+    for (let i = 1; i < totalFrames; i++) {
+      const img = new Image();
+      img.src = `/frames-login/frame_${pad(i + 1)}.png`;
+      images[i] = img;
+    }
+    imagesRef.current = images;
+
+    const drawCanvasFrame = (img: HTMLImageElement) => {
+      if (!canvasRef.current || !img || !img.complete || img.naturalWidth === 0) return;
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      const displayWidth = window.innerWidth;
+      const displayHeight = window.innerHeight;
+
+      if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
+        canvas.width = displayWidth * dpr;
+        canvas.height = displayHeight * dpr;
+      }
+
+      ctx.save();
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, displayWidth, displayHeight);
+
+      // Aspect Ratio Cover Math
+      const imgWidth = img.naturalWidth || img.width || 1920;
+      const imgHeight = img.naturalHeight || img.height || 1080;
+      const imgRatio = imgWidth / imgHeight;
+      const screenRatio = displayWidth / displayHeight;
+
+      let drawW = displayWidth;
+      let drawH = displayHeight;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      if (screenRatio > imgRatio) {
+        drawH = displayWidth / imgRatio;
+        offsetY = (displayHeight - drawH) / 2;
+      } else {
+        drawW = displayHeight * imgRatio;
+        offsetX = (displayWidth - drawW) / 2;
+      }
+
+      ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
+      ctx.restore();
+    };
+
+    let animationFrameId: number;
+    let lastTime = performance.now();
+    const fps = 25; // ~25 FPS animation rate
+    const frameInterval = 1000 / fps;
+
+    const renderLoop = (now: number) => {
+      if (!prefersReducedMotion) {
+        const elapsed = now - lastTime;
+        if (elapsed >= frameInterval) {
+          lastTime = now - (elapsed % frameInterval);
+
+          frameIndexRef.current = (frameIndexRef.current + 1) % totalFrames;
+          const currentImg = imagesRef.current[frameIndexRef.current];
+
+          if (currentImg && currentImg.complete && currentImg.naturalWidth > 0) {
+            drawCanvasFrame(currentImg);
+          } else {
+            // Fallback to frame 1 if not fully loaded yet
+            const firstImg = imagesRef.current[0];
+            if (firstImg && firstImg.complete) drawCanvasFrame(firstImg);
+          }
+        }
+        animationFrameId = requestAnimationFrame(renderLoop);
+      } else {
+        // Reduced motion: static frame 1
+        const firstImg = imagesRef.current[0];
+        if (firstImg && firstImg.complete) drawCanvasFrame(firstImg);
+      }
+    };
+
+    if (!prefersReducedMotion) {
+      animationFrameId = requestAnimationFrame(renderLoop);
+    }
+
+    const handleResize = () => {
+      const curImg = imagesRef.current[frameIndexRef.current] || imagesRef.current[0];
+      if (curImg && curImg.complete) drawCanvasFrame(curImg);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   // Load Session & Remembered Identifier on Mount
   useEffect(() => {
@@ -486,48 +604,37 @@ export default function CuentaPage() {
   };
 
   return (
-    <main className="relative min-h-screen w-full bg-[#0d1510] text-[#f4efe6] font-['Outfit',sans-serif] overflow-x-hidden flex flex-col justify-between selection:bg-[#F0822D] selection:text-white">
+    <main className="relative min-h-screen w-full bg-[#14110f] text-[#f4efe6] font-['Outfit',sans-serif] overflow-x-hidden flex flex-col justify-between selection:bg-[#F0822D] selection:text-white">
       
-      {/* ── FULL-BLEED ATMOSPHERIC BACKGROUND WITH CINEMATIC DARK OVERLAYS ── */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/hero_art_1.jpg"
-          alt="Atmospheric Home Kitchen Background"
-          fill
-          priority
-          className="object-cover object-center filter brightness-50 contrast-110"
+      {/* ── 150-FRAME ANIMATED CANVAS BACKGROUND (CONTINUOUS LOOP AT ~25FPS) ── */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none filter brightness-125"
         />
-        {/* Dark Vignette & Gradient Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0d1510] via-[#0d1510]/80 to-[#0d1510]/60" />
-        <div className="absolute inset-0 bg-radial from-transparent via-[#0d1510]/50 to-[#0d1510]/95" />
+
+        {/* Lighter Overlay Gradients so Video Stays Visible */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#14110f]/60 via-[#14110f]/25 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-radial from-transparent via-[#14110f]/20 to-[#14110f]/40 pointer-events-none" />
+
+        {/* Subtle Orange & Green Brand Ambient Glow Accents */}
+        <div className="absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-[#F0822D]/15 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-10 right-0 w-[30rem] h-[30rem] rounded-full bg-[#62B869]/15 blur-[140px] pointer-events-none" />
       </div>
 
       {/* ── TOP HEADER / BRAND TITLE (UPPER CENTER) ── */}
-      <header className="relative z-10 w-full pt-12 pb-6 px-6 text-center">
-        <div className="inline-flex items-center justify-center gap-3 group cursor-pointer">
-          <div className="w-12 h-12 rounded-full bg-black/60 border border-orange-500/40 backdrop-blur-md flex items-center justify-center p-2 transition-transform group-hover:scale-105 shadow-xl shadow-black/60">
-            <img
-              src="/brand/ollacercana-icon.svg"
-              alt="OllaCercana Icon"
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <h1 className="font-['Outfit',sans-serif] font-extrabold text-4xl sm:text-5xl md:text-6xl tracking-tight leading-none drop-shadow-2xl">
-            <span className="text-[#F0822D]">Olla</span>
-            <span className="text-[#62B869]">Cercana</span>
-          </h1>
-        </div>
-        <p className="text-xs uppercase tracking-widest text-stone-300 font-semibold mt-2 drop-shadow-md">
-          Sabor de Hogar • Gestión de Cuenta
-        </p>
+      <header className="relative z-10 w-full pt-10 pb-6 px-6 flex flex-col items-center justify-center text-center">
+        <Link href="/" className="cursor-pointer group transition-transform hover:scale-105">
+          <BrandLogo size="lg" showTagline={true} taglineColor="text-stone-200 drop-shadow-md" />
+        </Link>
       </header>
 
-      {/* ── MAIN CONTENT CONTAINER (CENTER / FORM PANEL) ── */}
+      {/* ── MAIN CONTENT CONTAINER (CENTERED FORM PANEL) ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 flex flex-col items-center justify-center">
         
-        {/* IF NOT LOGGED IN: COMPACT LOGIN FORM PANEL (POSITIONED CENTER-LEFT MATCHING REFERENCE) */}
+        {/* IF NOT LOGGED IN: COMPACT TRANSPARENT GLASS LOGIN FORM PANEL (CENTERED) */}
         {!user ? (
-          <div className="w-full max-w-md mx-auto lg:mr-auto lg:ml-12 bg-black/65 backdrop-blur-xl border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/90 space-y-6">
+          <div className="w-full max-w-md mx-auto bg-black/25 backdrop-blur-xl border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/90 space-y-6">
             
             {/* Login / Register Toggle Header */}
             <div className="flex items-center justify-around border-b border-white/10 pb-3">
@@ -563,7 +670,6 @@ export default function CuentaPage() {
                   </div>
                 )}
 
-                {/* Email / Phone Field */}
                 <div className="space-y-1.5 text-left">
                   <label className="text-xs uppercase font-bold tracking-wider text-stone-300">
                     Identificador (Correo o Celular)
@@ -577,7 +683,6 @@ export default function CuentaPage() {
                   />
                 </div>
 
-                {/* Password Field */}
                 <div className="space-y-1.5 text-left">
                   <label className="text-xs uppercase font-bold tracking-wider text-stone-300">
                     Contraseña
@@ -603,7 +708,6 @@ export default function CuentaPage() {
                   </div>
                 </div>
 
-                {/* Remember Session Checkbox */}
                 <div className="flex items-center justify-between pt-1 text-xs text-stone-300">
                   <label className="flex items-center gap-2.5 cursor-pointer">
                     <input
@@ -616,7 +720,6 @@ export default function CuentaPage() {
                   </label>
                 </div>
 
-                {/* Full-width Accent Submit Button */}
                 <button
                   type="submit"
                   className="w-full mt-3 py-3.5 rounded-xl bg-[#F0822D] hover:bg-[#d97224] text-white font-bold text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg shadow-orange-950/50 active:scale-[0.98]"
@@ -692,7 +795,6 @@ export default function CuentaPage() {
                 {regErrors.password && <span className="text-[11px] text-rose-400 font-mono block">{regErrors.password}</span>}
                 {regErrors.confirmPassword && <span className="text-[11px] text-rose-400 block">{regErrors.confirmPassword}</span>}
 
-                {/* Role Selector */}
                 <div>
                   <label className="text-[10px] uppercase font-bold tracking-wider text-stone-300 block mb-1">Rol en OllaCercana</label>
                   <div className="grid grid-cols-2 gap-2">
@@ -748,7 +850,6 @@ export default function CuentaPage() {
           /* IF LOGGED IN: DASHBOARD PANEL & PROFILE */
           <div className="w-full max-w-4xl bg-black/75 backdrop-blur-xl border border-white/20 rounded-3xl p-6 sm:p-10 shadow-2xl space-y-8 my-6">
             
-            {/* Logged in User Bar */}
             <div className="p-4 rounded-2xl bg-black/60 border border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-[#F0822D]/20 border border-[#F0822D]/40 flex items-center justify-center text-[#F0822D] font-bold">
@@ -769,7 +870,6 @@ export default function CuentaPage() {
               </button>
             </div>
 
-            {/* Role Tab Switcher */}
             <div className="grid grid-cols-3 gap-2 p-1.5 rounded-2xl bg-black/60 border border-white/10">
               <button
                 onClick={() => setActiveRoleTab("cocinero")}
@@ -808,7 +908,6 @@ export default function CuentaPage() {
               </button>
             </div>
 
-            {/* Cook Requests & HU-23 Flow */}
             {activeRoleTab === "cocinero" && (
               <div className="space-y-6 text-left">
                 <div className="flex items-center justify-between border-b border-white/10 pb-3">
@@ -966,7 +1065,6 @@ export default function CuentaPage() {
               </div>
             )}
 
-            {/* Profile Form */}
             <form onSubmit={handleProfileSave} className="space-y-4 text-left border-t border-white/10 pt-6">
               <div className="flex items-center justify-between">
                 <h4 className="text-sm font-bold text-white flex items-center gap-2">
@@ -1071,7 +1169,6 @@ export default function CuentaPage() {
 
       {/* ── CORNER MENU (BOTTOM-RIGHT CORNER MATCHING REFERENCE LAYOUT) ── */}
       <footer className="relative z-10 w-full px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 bg-black/40 backdrop-blur-md">
-        {/* Left Back link */}
         <Link
           href="/"
           className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-stone-400 hover:text-white transition-colors"
@@ -1080,7 +1177,6 @@ export default function CuentaPage() {
           <span>Volver a OllaCercana</span>
         </Link>
 
-        {/* Right Corner Menu Links */}
         <div className="flex flex-wrap items-center justify-end gap-6 text-xs font-bold tracking-widest uppercase text-stone-300">
           {!user ? (
             <button

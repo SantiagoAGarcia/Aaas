@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import BrandLogo from "@/components/BrandLogo";
 import {
   Search,
   MapPin,
@@ -23,6 +24,7 @@ import {
   ClipboardList,
   Sparkles,
   CheckCircle2,
+  ChefHat,
 } from "lucide-react";
 
 interface CartItem {
@@ -73,7 +75,7 @@ export default function MenuPage() {
       formattedPrice: "$22.000",
       image: "/images/menu_cazuela.jpg",
       cook: "Don Carlos",
-      cookAvatar: "/images/hero_art_2.jpg",
+      cookAvatar: "/images/abuelita_3d_mascot.jpg",
       rating: "4,8",
       reviews: "95",
       distance: "A 600 m",
@@ -87,7 +89,7 @@ export default function MenuPage() {
       formattedPrice: "$17.000",
       image: "/images/dish_pollo_chalk.jpg",
       cook: "Doña Marta",
-      cookAvatar: "/images/hero_art_1.jpg",
+      cookAvatar: "/images/dona_rosa_mascot.jpg",
       rating: "4,8",
       reviews: "87",
       distance: "A 800 m",
@@ -101,7 +103,7 @@ export default function MenuPage() {
       formattedPrice: "$15.000",
       image: "/images/hero_plate_gourmet.jpg",
       cook: "María Elena",
-      cookAvatar: "/images/olla_dish_2.jpg",
+      cookAvatar: "/images/abuelita_3d_mascot.jpg",
       rating: "4,7",
       reviews: "73",
       distance: "A 1,2 km",
@@ -115,7 +117,7 @@ export default function MenuPage() {
       formattedPrice: "$19.000",
       image: "/images/olla_dish_1.jpg",
       cook: "Don Luis",
-      cookAvatar: "/images/hero_art_2.jpg",
+      cookAvatar: "/images/dona_rosa_mascot.jpg",
       rating: "4,9",
       reviews: "101",
       distance: "A 1,1 km",
@@ -129,7 +131,7 @@ export default function MenuPage() {
       formattedPrice: "$6.000",
       image: "/images/menu_postre.jpg",
       cook: "Doña Lucía",
-      cookAvatar: "/images/dona_rosa_mascot.jpg",
+      cookAvatar: "/images/abuelita_3d_mascot.jpg",
       rating: "4,8",
       reviews: "64",
       distance: "A 900 m",
@@ -192,24 +194,46 @@ export default function MenuPage() {
     return matchesFilter && matchesSearch;
   });
 
+  const marqueeItemsRow1 = [
+    { title: "Ajiaco Santafereño", subtitle: "Doña Carmen • Salitre", image: "/images/menu_ajiaco.jpg", badge: "Sopas" },
+    { title: "Bandeja Criolla", subtitle: "Señora Martha • El Rosal", image: "/images/menu_cazuela.jpg", badge: "Almuerzos" },
+    { title: "Pollo al Romero", subtitle: "Chef Luisa • Modelo", image: "/images/hero_plate_gourmet.jpg", badge: "Especiales" },
+    { title: "Flan de Caramelo", subtitle: "Abuela Beatriz • Torre 3", image: "/images/menu_postre.jpg", badge: "Postres" },
+    { title: "Pollo Guisado", subtitle: "Doña Marta • Norte", image: "/images/dish_pollo_chalk.jpg", badge: "Guisos" },
+    { title: "Sancocho Trifásico", subtitle: "Don Luis • Colina", image: "/images/olla_dish_1.jpg", badge: "Sopas" },
+  ];
+
+  const marqueeItemsRow2 = [
+    { title: "Abuela OllaCercana", subtitle: "Mascota Oficial", image: "/images/abuelita_3d_mascot.jpg", badge: "Comunidad" },
+    { title: "Doña Rosa Mascot", subtitle: "Sazón de Hogar", image: "/images/dona_rosa_mascot.jpg", badge: "Cocinas" },
+    { title: "Sancocho de Gallina", subtitle: "Cocina Tradicional", image: "/images/menu_ajiaco.jpg", badge: "Recetas" },
+    { title: "Cazuela Paisa", subtitle: "María Elena • Salitre", image: "/images/olla_dish_2.jpg", badge: "Guisos" },
+    { title: "Pollo Dorado", subtitle: "Doña Marta • El Rosal", image: "/images/hero_plate_gourmet.jpg", badge: "Almuerzos" },
+    { title: "Postres de Natas", subtitle: "Doña Lucía • Torre 2", image: "/images/menu_postre.jpg", badge: "Dulces" },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#F7F3EB] text-[#2C241E] font-['Outfit',sans-serif] selection:bg-[#C84B31] selection:text-white">
+    <div className="relative min-h-screen bg-[#F4EFE6] text-[#2C241E] font-['Outfit',sans-serif] selection:bg-[#C84B31] selection:text-white overflow-x-hidden">
+      
+      {/* ── SUNLIT VINTAGE FLORAL KITCHEN BACKGROUND IMAGE (EXACT REFERENCE MATCH) ── */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <Image
+          src="/images/libreton_kitchen_bg.jpg"
+          alt="Sunlit Vintage Kitchen Background with Floral Ceramic Tiles"
+          fill
+          priority
+          className="object-cover object-center filter brightness-[1.02] contrast-[1.02]"
+        />
+        {/* Soft Ambient Overlay for Optimal Content Legibility */}
+        <div className="absolute inset-0 bg-radial from-transparent via-white/10 to-black/15 pointer-events-none" />
+      </div>
+
       {/* ── 1. TOP NAVIGATION BAR ── */}
       <header className="sticky top-0 z-40 bg-white border-b border-stone-200/80 shadow-xs px-4 md:px-8 py-3">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-2 group shrink-0">
-            <div className="w-8 h-8 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center p-1 transition-transform group-hover:scale-105">
-              <img
-                src="/brand/ollacercana-icon.svg"
-                alt="OllaCercana Icon"
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <span className="font-['Outfit',sans-serif] font-extrabold text-2xl tracking-tight leading-none">
-              <span className="text-[#F0822D]">Olla</span>
-              <span className="text-[#62B869]">Cercana</span>
-            </span>
+          <Link href="/" className="group shrink-0 flex items-center">
+            <BrandLogo size="sm" showTagline={false} />
           </Link>
 
           {/* Location Selector */}
@@ -435,70 +459,85 @@ export default function MenuPage() {
               {filteredDishes.map((dish) => (
                 <div
                   key={dish.id}
-                  className="bg-white rounded-3xl border border-stone-300 shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group"
+                  className="rounded-3xl shadow-2xl hover:shadow-3xl transition-all overflow-hidden flex flex-col justify-between h-full group bg-transparent"
                 >
-                  {/* Chalkboard Upper Card */}
-                  <div className="relative bg-[#1A1C1E] border-b-4 border-[#3A2D23] p-4 text-white min-h-[220px] flex flex-col justify-between overflow-hidden">
-                    {/* Rope loops on top */}
-                    <div className="absolute top-1 left-4 w-2 h-2 rounded-full bg-stone-500 border border-stone-800" />
-                    <div className="absolute top-1 right-4 w-2 h-2 rounded-full bg-stone-500 border border-stone-800" />
+                  {/* REALISTIC THICK MAHOGANY (CAOBA) WOODEN MOULDING FRAME AROUND BLACK CHALKBOARD */}
+                  <div className="relative p-2.5 sm:p-3 rounded-t-3xl bg-gradient-to-b from-[#5C2310] via-[#3E1609] to-[#240B03] border-2 border-[#722A13] shadow-2xl ring-1 ring-[#1A0702] flex-1 flex flex-col justify-between">
+                    {/* Metallic / Copper Corner Rivet Accents */}
+                    <div className="absolute top-1.5 left-2 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-amber-400 via-amber-700 to-amber-950 border border-amber-900 z-20 shadow-sm" />
+                    <div className="absolute top-1.5 right-2 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-amber-400 via-amber-700 to-amber-950 border border-amber-900 z-20 shadow-sm" />
 
-                    {/* Header Chalk Title & Badge */}
-                    <div className="flex items-start justify-between gap-2 z-10">
-                      <h3 className="font-['Caveat',cursive] text-2xl font-bold leading-tight text-white group-hover:text-[#F4C430] transition-colors">
-                        {dish.name}
-                      </h3>
+                    {/* Inner Black Chalkboard Panel */}
+                    <div className="relative bg-[#1A1C1E] border-2 border-[#2B0F06] rounded-t-2xl p-3.5 sm:p-4 text-white flex-1 flex flex-col justify-between min-h-[250px] shadow-[inset_0_3px_10px_rgba(0,0,0,0.85)]">
+                      {/* Rope loops on top */}
+                      <div className="absolute top-1 left-4 w-2 h-2 rounded-full bg-stone-500 border border-stone-800" />
+                      <div className="absolute top-1 right-4 w-2 h-2 rounded-full bg-stone-500 border border-stone-800" />
 
-                      {dish.badge && (
-                        <span className="px-2.5 py-0.5 rounded-full border border-dashed border-[#F4C430] bg-[#F4C430]/10 text-[#F4C430] font-['Caveat',cursive] text-sm font-semibold shrink-0">
-                          {dish.badge}
+                      {/* Header Chalk Title & Badge */}
+                      <div className="flex items-start justify-between gap-2 z-10 pt-1 min-h-[2.8rem]">
+                        <h3 className="font-['Caveat',cursive] text-2xl font-bold leading-tight text-white group-hover:text-[#F4C430] transition-colors">
+                          {dish.name}
+                        </h3>
+
+                        {dish.badge ? (
+                          <span className="px-2.5 py-0.5 rounded-full border border-dashed border-[#F4C430] bg-[#F4C430]/10 text-[#F4C430] font-['Caveat',cursive] text-sm font-semibold shrink-0">
+                            {dish.badge}
+                          </span>
+                        ) : (
+                          <div className="h-6 shrink-0" />
+                        )}
+                      </div>
+
+                      {/* Dish Image (Aspect ratio adapted so price row is never squeezed) */}
+                      <div className="relative w-full aspect-[16/10] my-2 rounded-xl overflow-hidden shadow-inner border border-stone-700/60 shrink-0">
+                        <Image
+                          src={dish.image}
+                          alt={dish.name}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+
+                      {/* Chalk Yellow Price & Steam Icon */}
+                      <div className="flex items-center justify-between z-10 pt-2 pb-1 shrink-0">
+                        <span className="font-['Caveat',cursive] text-2xl font-bold text-[#F4C430] leading-none">
+                          {dish.formattedPrice}
                         </span>
-                      )}
-                    </div>
-
-                    {/* Dish Image & Steam Details */}
-                    <div className="relative w-full aspect-4/3 my-2 rounded-2xl overflow-hidden shadow-inner border border-stone-700/50">
-                      <Image
-                        src={dish.image}
-                        alt={dish.name}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-
-                    {/* Chalk Yellow Price */}
-                    <div className="flex items-center justify-between z-10 pt-1">
-                      <span className="font-['Caveat',cursive] text-2xl font-bold text-[#F4C430]">
-                        {dish.formattedPrice}
-                      </span>
-                      {/* Steam doodle */}
-                      <span className="text-stone-400 text-xs font-['Caveat',cursive]">
-                        ♨️ Recién hecho
-                      </span>
+                        {/* Steam doodle */}
+                        <span className="text-stone-400 text-xs font-['Caveat',cursive] leading-none flex items-center gap-1">
+                          <span>♨️</span>
+                          <span>Recién hecho</span>
+                        </span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Light Bottom Footer Card */}
-                  <div className="p-4 bg-white flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-9 h-9 rounded-full overflow-hidden relative border border-stone-300 shrink-0">
-                        <Image
+                  {/* Light Bottom Footer Card - White strip below */}
+                  <div className="w-full bg-white p-4 flex items-center justify-between gap-3 border-x-2 border-b-2 border-stone-200 rounded-b-3xl shrink-0 z-10 text-stone-900 shadow-md">
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                      {/* Cook Avatar Circle */}
+                      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-200 shrink-0 bg-stone-100 shadow-xs relative">
+                        <img
                           src={dish.cookAvatar}
                           alt={dish.cook}
-                          fill
-                          className="object-cover"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = "/images/dona_rosa_mascot.jpg";
+                          }}
+                          className="w-full h-full object-cover"
                         />
                       </div>
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold text-stone-800 truncate">
+                      {/* Cook Name, Rating, and Distance */}
+                      <div className="min-w-0 flex flex-col justify-center">
+                        <p className="text-xs font-bold text-stone-900 truncate leading-tight">
                           {dish.cook}
                         </p>
-                        <div className="flex items-center gap-2 text-[11px] text-stone-500">
+                        <div className="flex items-center gap-1.5 text-[11px] text-stone-600 font-medium pt-0.5">
                           <span className="flex items-center gap-0.5 text-amber-600 font-semibold">
-                            <Star className="w-3 h-3 fill-current text-amber-500" />
+                            <Star className="w-3 h-3 fill-amber-400 text-amber-500" />
                             {dish.rating} ({dish.reviews})
                           </span>
-                          <span>•</span>
+                          <span className="text-stone-300">•</span>
                           <span className="truncate">📍 {dish.distance}</span>
                         </div>
                       </div>
@@ -679,6 +718,266 @@ export default function MenuPage() {
           </aside>
         </div>
       </main>
+
+      {/* ── 5. INFINITE COOK & DISH MARQUEE SECTION ── */}
+      <section className="relative z-10 w-full py-16 overflow-hidden border-t border-emerald-900/30 bg-[#0e1610]/95 backdrop-blur-md text-white my-12 shadow-2xl">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 text-center space-y-3 mb-10">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#62B869] inline-flex items-center justify-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-600/30">
+            <Sparkles className="w-3.5 h-3.5 text-[#F0822D]" />
+            <span>NUESTRAS COCINERAS Y PLATILLOS ESTRELLA</span>
+          </span>
+          <h2 className="font-serif text-3xl md:text-4xl font-extrabold text-white">
+            Comunidad de Sabor Vecinal
+          </h2>
+          <p className="text-stone-300 text-xs sm:text-sm font-light max-w-xl mx-auto">
+            Platos criollos preparados en la mañana por las vecinas de tu conjunto residencial y barrio.
+          </p>
+        </div>
+
+        {/* Marquee Row 1: Right to Left */}
+        <div className="relative w-full overflow-hidden mb-6 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="animate-marquee-left flex gap-6">
+            {[...marqueeItemsRow1, ...marqueeItemsRow1].map((item, idx) => (
+              <div
+                key={`m1-${idx}`}
+                className="w-60 shrink-0 bg-[#17221A]/90 border border-emerald-500/20 rounded-2xl p-3 flex items-center gap-3 shadow-xl backdrop-blur-md group hover:border-[#F0822D]/60 transition-all cursor-pointer"
+              >
+                <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-stone-700">
+                  <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                </div>
+                <div className="min-w-0 text-left">
+                  <span className="text-[10px] font-semibold text-[#62B869] block uppercase tracking-wider">{item.badge}</span>
+                  <h4 className="text-xs font-bold text-white truncate">{item.title}</h4>
+                  <p className="text-[11px] text-stone-400 truncate">{item.subtitle}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Marquee Row 2: Left to Right */}
+        <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="animate-marquee-right flex gap-6">
+            {[...marqueeItemsRow2, ...marqueeItemsRow2].map((item, idx) => (
+              <div
+                key={`m2-${idx}`}
+                className="w-60 shrink-0 bg-[#1A201A]/90 border border-emerald-500/20 rounded-2xl p-3 flex items-center gap-3 shadow-xl backdrop-blur-md group hover:border-[#62B869]/60 transition-all cursor-pointer"
+              >
+                <div className="relative w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-[#F0822D]/40">
+                  <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                </div>
+                <div className="min-w-0 text-left">
+                  <span className="text-[10px] font-semibold text-[#F0822D] block uppercase tracking-wider">{item.badge}</span>
+                  <h4 className="text-xs font-bold text-white truncate">{item.title}</h4>
+                  <p className="text-[11px] text-stone-400 truncate">{item.subtitle}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 6. BENTO GRID SECTION (EXACT STRUCTURAL LAYOUT REFERENCE MATCH) ── */}
+      <section className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-12 space-y-8 text-white">
+        
+        {/* Bento Row 1: Large Top Hero Highlight Card (Studio Pley Stuodic -> Experiencia OllaCercana) */}
+        <div className="relative bg-gradient-to-r from-[#142117]/95 via-[#18281C]/95 to-[#111C14]/95 border border-emerald-500/30 rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-xl">
+          <div className="space-y-4 max-w-xl text-left z-10">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#F0822D] px-3.5 py-1 rounded-full bg-orange-950/60 border border-orange-500/30 inline-block">
+              COMIDA DE CASA • A UN PASO DE TU PUERTA
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight">
+              Experiencia OllaCercana: <br />
+              <span className="text-[#62B869]">Sabor Auténtico de Barrio</span>
+            </h2>
+            <p className="text-stone-300 text-xs sm:text-sm font-light leading-relaxed">
+              Conectamos el sazón tradicional de las cocineras de tu conjunto residencial con vecinos que buscan almuerzos saludables, caseros y recién hechos todos los días.
+            </p>
+            <div className="flex flex-wrap gap-4 pt-2">
+              <button
+                onClick={() => {
+                  const el = document.getElementById("explorar");
+                  el?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="px-6 py-3 rounded-full bg-[#F0822D] hover:bg-[#d97224] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-orange-950/40 cursor-pointer"
+              >
+                Explorar Platos del Día
+              </button>
+              <Link
+                href="/cocineras-cercanas"
+                className="px-6 py-3 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-stone-200 hover:text-white font-bold text-xs uppercase tracking-wider transition-all"
+              >
+                Conocer Cocineras →
+              </Link>
+            </div>
+          </div>
+
+          {/* Right Visual Element (Pot Graphic / Hero Dish Plate) */}
+          <div className="relative w-64 h-64 sm:w-72 sm:h-72 rounded-3xl overflow-hidden border-2 border-emerald-500/30 shadow-2xl shrink-0 group">
+            <img src="/images/hero_plate_gourmet.jpg" alt="Pollo Dorado al Romero" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+              <span className="text-xs font-bold text-emerald-300 font-['Caveat',cursive] text-lg">
+                Receta de la Abuela Luisa ♡
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Bento Row 2: 3 Even Columns (Horere Ckonus, Nobe Fis, Umramed Piliiee) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-[#152219]/90 border border-emerald-500/20 rounded-3xl p-6 space-y-3 shadow-xl backdrop-blur-md text-left hover:border-[#F0822D]/50 transition-all">
+            <div className="w-10 h-10 rounded-2xl bg-[#F0822D]/20 border border-[#F0822D]/40 flex items-center justify-center text-[#F0822D]">
+              <Utensils className="w-5 h-5" />
+            </div>
+            <h3 className="font-bold text-lg text-white">1. Explora el Libretón</h3>
+            <p className="text-xs text-stone-300 font-light leading-relaxed">
+              Consulta las ofertas diarias preparadas por las vecinas de tu sector cada mañana.
+            </p>
+            <span className="text-[11px] font-bold text-[#F0822D] uppercase tracking-wider block pt-2">
+              Ver Menú del Día →
+            </span>
+          </div>
+
+          <div className="bg-[#152219]/90 border border-emerald-500/20 rounded-3xl p-6 space-y-3 shadow-xl backdrop-blur-md text-left hover:border-[#62B869]/50 transition-all">
+            <div className="w-10 h-10 rounded-2xl bg-[#62B869]/20 border border-[#62B869]/40 flex items-center justify-center text-[#62B869]">
+              <ChefHat className="w-5 h-5" />
+            </div>
+            <h3 className="font-bold text-lg text-white">2. Reserva Tu Porción</h3>
+            <p className="text-xs text-stone-300 font-light leading-relaxed">
+              Sin intermediarios ni comisiones abusivas. Paga directo por Nequi o Efectivo.
+            </p>
+            <span className="text-[11px] font-bold text-[#62B869] uppercase tracking-wider block pt-2">
+              Reserva Fácil →
+            </span>
+          </div>
+
+          <div className="bg-[#152219]/90 border border-emerald-500/20 rounded-3xl p-6 space-y-3 shadow-xl backdrop-blur-md text-left hover:border-[#F0822D]/50 transition-all">
+            <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
+              <ShoppingBag className="w-5 h-5" />
+            </div>
+            <h3 className="font-bold text-lg text-white">3. Entrega Vecinal</h3>
+            <p className="text-xs text-stone-300 font-light leading-relaxed">
+              Recibe tu comida caliente en la portería o puerta de tu departamento.
+            </p>
+            <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider block pt-2">
+              Sin Complicaciones →
+            </span>
+          </div>
+        </div>
+
+        {/* Bento Row 3: 3 Image-Heavy Showcase Cards (Oescio, Pos, Wiveest) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="relative h-64 rounded-3xl overflow-hidden border border-emerald-500/20 shadow-xl group">
+            <img src="/images/menu_ajiaco.jpg" alt="Ajiaco Santafereño" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent p-6 flex flex-col justify-end text-left">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#F0822D]">SOPAS TRADICIONALES</span>
+              <h4 className="font-bold text-lg text-white">Ajiaco Santafereño</h4>
+              <p className="text-xs text-stone-300 font-light">Pollo desmechado, 3 tipos de papa, guascas y alcaparras.</p>
+            </div>
+          </div>
+
+          <div className="relative h-64 rounded-3xl overflow-hidden border border-emerald-500/20 shadow-xl group">
+            <img src="/images/menu_cazuela.jpg" alt="Bandeja Criolla" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent p-6 flex flex-col justify-end text-left">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#62B869]">PLATOS DE MONTAÑA</span>
+              <h4 className="font-bold text-lg text-white">Bandeja Criolla</h4>
+              <p className="text-xs text-stone-300 font-light">Carne jugosa, arroz fresco, plátano maduro y aguacate.</p>
+            </div>
+          </div>
+
+          <div className="relative h-64 rounded-3xl overflow-hidden border border-emerald-500/20 shadow-xl group">
+            <img src="/images/dish_pollo_chalk.jpg" alt="Pollo Guisado" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent p-6 flex flex-col justify-end text-left">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400">SAZÓN DE HOGAR</span>
+              <h4 className="font-bold text-lg text-white">Pollo Guisado en Salsa</h4>
+              <p className="text-xs text-stone-300 font-light">Receta criolla a fuego lento con cilantro fresco.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Bento Row 4: Lower Asymmetric Block (Buns Conmeap, Saips in Sore, Moabinloes) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          {/* Block 1: Garantía & Pasos (Buns Conmeap) */}
+          <div className="lg:col-span-4 bg-[#142117]/90 border border-emerald-500/20 rounded-3xl p-6 text-left space-y-4 shadow-xl backdrop-blur-md flex flex-col justify-between">
+            <div className="space-y-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#62B869]">COMPROMISO OLLACERCANA</span>
+              <h4 className="font-bold text-xl text-white">Comida Real y Saludable</h4>
+              <p className="text-xs text-stone-300 font-light leading-relaxed">
+                Cada plato es preparado en cocinas familiares que cumplen con altos estándares de higiene y sazón de hogar.
+              </p>
+            </div>
+            <div className="space-y-2 pt-2 border-t border-emerald-900/40 text-xs text-stone-200">
+              <p className="flex items-center gap-2 font-semibold">
+                <CheckCircle2 className="w-4 h-4 text-[#62B869]" />
+                <span>100% Ingredientes de la plaza local</span>
+              </p>
+              <p className="flex items-center gap-2 font-semibold">
+                <CheckCircle2 className="w-4 h-4 text-[#62B869]" />
+                <span>Sin preservantes ni caldos artificiales</span>
+              </p>
+              <p className="flex items-center gap-2 font-semibold">
+                <CheckCircle2 className="w-4 h-4 text-[#62B869]" />
+                <span>Apoyo directo a mujeres de tu vecindario</span>
+              </p>
+            </div>
+          </div>
+
+          {/* Block 2: 4 Micro Badge Grid (Saips in Sore Seyiaing) */}
+          <div className="lg:col-span-4 bg-[#18241B]/90 border border-emerald-500/20 rounded-3xl p-6 text-left space-y-4 shadow-xl backdrop-blur-md flex flex-col justify-between">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#F0822D]">PILARES COMUNITARIOS</span>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="p-3 rounded-2xl bg-black/40 border border-emerald-500/20 space-y-1">
+                <span className="text-lg">🥇</span>
+                <p className="text-xs font-bold text-white">Higiene</p>
+                <p className="text-[10px] text-stone-400">Revisión constante</p>
+              </div>
+              <div className="p-3 rounded-2xl bg-black/40 border border-emerald-500/20 space-y-1">
+                <span className="text-lg">🏡</span>
+                <p className="text-xs font-bold text-white">Cercanía</p>
+                <p className="text-[10px] text-stone-400">En tu mismo barrio</p>
+              </div>
+              <div className="p-3 rounded-2xl bg-black/40 border border-emerald-500/20 space-y-1">
+                <span className="text-lg">❤️</span>
+                <p className="text-xs font-bold text-white">Amor</p>
+                <p className="text-[10px] text-stone-400">Recetas de la abuela</p>
+              </div>
+              <div className="p-3 rounded-2xl bg-black/40 border border-emerald-500/20 space-y-1">
+                <span className="text-lg">🚴</span>
+                <p className="text-xs font-bold text-white">Ecológico</p>
+                <p className="text-[10px] text-stone-400">Entregas a pie</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Block 3: Historias de Hogar (Moabinloes) */}
+          <div className="lg:col-span-4 relative rounded-3xl overflow-hidden border border-emerald-500/20 shadow-xl group min-h-[220px]">
+            <img src="/images/dona_rosa_mascot.jpg" alt="Doña Rosa Mascot" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-6 flex flex-col justify-end text-left space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#62B869]">TESTIMONIO DE HOGAR</span>
+              <p className="text-xs font-serif italic text-stone-200">
+                “Cocinar para mis vecinos es compartir el amor de mi familia. Cada plato lleva lo mejor de mí.”
+              </p>
+              <p className="text-xs font-bold text-[#F0822D] pt-1">— Doña Rosa, Cocinera Vecinal</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Banner Callout: Únete como Cocinera */}
+        <div className="bg-gradient-to-r from-[#1D2B20] via-[#162419] to-[#101C12] border border-emerald-500/40 rounded-3xl p-8 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-6 text-left">
+          <div className="space-y-1">
+            <h3 className="font-serif text-2xl font-bold text-white">¿Eres apasionada por la cocina casera?</h3>
+            <p className="text-xs text-stone-300 font-light">
+              Únete a nuestra red de cocineras de barrio y comparte tu sazón con los vecinos de tu conjunto.
+            </p>
+          </div>
+          <Link
+            href="/cuenta"
+            className="px-6 py-3.5 rounded-full bg-[#F0822D] hover:bg-[#d97224] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg shrink-0"
+          >
+            Unirme como Cocinera →
+          </Link>
+        </div>
+      </section>
 
       {/* ── CHECKOUT ORDER CONFIRMATION MODAL ── */}
       {orderModalOpen && (

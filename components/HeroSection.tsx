@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { BookOpen, MapPin, Phone } from "lucide-react";
+import BrandLogo from "./BrandLogo";
 
 export default function HeroSection() {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -40,25 +41,14 @@ export default function HeroSection() {
       {/* 1. STARTING TITLE LOCKUP (0% SCROLL - FADES OUT ON SCROLL) */}
       {/* ========================================================================= */}
       <div 
-        className="relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-8 md:px-12 flex items-center justify-center gap-3 sm:gap-4 md:gap-5 text-center pointer-events-none transition-opacity duration-75 ease-out my-auto"
+        className="relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-8 md:px-12 flex flex-col items-center justify-center text-center pointer-events-none transition-opacity duration-75 ease-out my-auto"
         style={{
           opacity: titleOpacity,
           transform: `scale(${titleScale})`,
           visibility: titleOpacity === 0 ? "hidden" : "visible",
         }}
       >
-        {/* Pot & Steam Brand Icon */}
-        <img 
-          src="/brand/ollacercana-icon.svg" 
-          alt="OllaCercana Icon"
-          className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 shrink-0 select-none object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]"
-        />
-
-        {/* Two-Tone Single Wordmark: Olla (#F0822D) + Cercana (#62B869) */}
-        <h1 className="font-['Outfit'] font-extrabold text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tight leading-none select-none flex items-center drop-shadow-[0_4px_16px_rgba(0,0,0,0.4)]">
-          <span className="text-[#F0822D]">Olla</span>
-          <span className="text-[#62B869]">Cercana</span>
-        </h1>
+        <BrandLogo size="xl" showTagline={true} taglineColor="text-white drop-shadow-md" />
       </div>
 
       {/* ========================================================================= */}
