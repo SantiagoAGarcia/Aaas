@@ -279,7 +279,7 @@ export default function MenuPage() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#F4EFE6] text-[#2C241E] font-['Outfit',sans-serif] selection:bg-[#C84B31] selection:text-white overflow-x-clip">
+    <div className="relative min-h-screen bg-[#F4EFE6] text-[#2C241E] font-['Outfit',sans-serif] selection:bg-[#C84B31] selection:text-white overflow-x-hidden">
       
       {/* ── SUNLIT VINTAGE FLORAL KITCHEN BACKGROUND IMAGE (EXACT REFERENCE MATCH) ── */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -461,10 +461,10 @@ export default function MenuPage() {
         {/* ── 4. DISH GRID SECTION & RIGHT SIDEBAR ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* LEFT 8 COLS: ANTOJO DEL DÍA, SEARCH, FILTERS & DISH CARDS GRID */}
-          <section className="relative lg:col-span-8 space-y-6">
+          <section className="lg:col-span-8 space-y-6">
 
             {/* ── ANTOJO DEL DÍA (HIGHLIGHT STRIP DE 8 COCINERAS CERCA DE TI) ── */}
-            <div className="relative bg-stone-900/90 border border-amber-600/30 rounded-3xl p-5 shadow-xl text-stone-100 space-y-4">
+            <div className="bg-stone-900/90 border border-amber-600/30 rounded-3xl p-5 shadow-xl text-stone-100 space-y-4">
               <div className="flex items-center justify-between border-b border-stone-800 pb-3">
                 <div className="flex items-center gap-2">
                   <Flame className="w-5 h-5 text-[#F0822D]" />
