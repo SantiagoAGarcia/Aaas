@@ -90,14 +90,6 @@ export default function CuentaPage() {
       return;
     }
 
-    // El identificador debe ser un correo válido o un celular de 10 dígitos (empieza por 3)
-    const isValidEmailFormat = /^\S+@\S+\.\S+$/.test(loginId.trim());
-    const isValidPhoneFormat = /^3\d{9}$/.test(loginId.trim());
-    if (!isValidEmailFormat && !isValidPhoneFormat) {
-      setLoginError("Ingresa un correo válido (ej: usuario@ollacercana.com) o un celular de 10 dígitos que empiece por 3.");
-      return;
-    }
-
     // Escenario 3 (HU-02): Usuario inexistente
     if (
       loginId.toLowerCase().includes("inexistente") ||
@@ -111,13 +103,6 @@ export default function CuentaPage() {
     // Escenario 2 (HU-02): Credenciales inválidas
     if (loginPassword === "erronea" || loginPassword === "123") {
       setLoginError("Credenciales inválidas");
-      return;
-    }
-
-    // La contraseña debe cumplir la misma regla de formato que en el registro
-    const pwdFormatRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
-    if (!pwdFormatRegex.test(loginPassword)) {
-      setLoginError("La contraseña debe incluir al menos una mayúscula, una minúscula y un número.");
       return;
     }
 

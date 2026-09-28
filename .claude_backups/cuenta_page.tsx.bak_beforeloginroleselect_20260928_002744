@@ -44,7 +44,6 @@ export default function CuentaPage() {
   const [loginPassword, setLoginPassword] = useState("");
   const [rememberSession, setRememberSession] = useState(false);
   const [loginError, setLoginError] = useState("");
-  const [loginRole, setLoginRole] = useState<"comprador" | "cocinera" | "admin">("comprador");
 
   // Register Form State
   const [regName, setRegName] = useState("");
@@ -90,14 +89,6 @@ export default function CuentaPage() {
       return;
     }
 
-    // El identificador debe ser un correo válido o un celular de 10 dígitos (empieza por 3)
-    const isValidEmailFormat = /^\S+@\S+\.\S+$/.test(loginId.trim());
-    const isValidPhoneFormat = /^3\d{9}$/.test(loginId.trim());
-    if (!isValidEmailFormat && !isValidPhoneFormat) {
-      setLoginError("Ingresa un correo válido (ej: usuario@ollacercana.com) o un celular de 10 dígitos que empiece por 3.");
-      return;
-    }
-
     // Escenario 3 (HU-02): Usuario inexistente
     if (
       loginId.toLowerCase().includes("inexistente") ||
@@ -114,13 +105,6 @@ export default function CuentaPage() {
       return;
     }
 
-    // La contraseña debe cumplir la misma regla de formato que en el registro
-    const pwdFormatRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
-    if (!pwdFormatRegex.test(loginPassword)) {
-      setLoginError("La contraseña debe incluir al menos una mayúscula, una minúscula y un número.");
-      return;
-    }
-
     // Escenario 1 (HU-02): Camino feliz
     if (rememberSession) {
       localStorage.setItem("ollacercana_remembered_id", loginId);
@@ -128,12 +112,15 @@ export default function CuentaPage() {
       localStorage.removeItem("ollacercana_remembered_id");
     }
 
+    const isCocineraRole = loginId.toLowerCase().includes("cocinera");
+    const isAdminRole = loginId.toLowerCase().includes("admin");
+
     const newUser: UserProfile = {
       name: loginId.includes("@") ? loginId.split("@")[0] : "Cocinera Elena",
       email: loginId.includes("@") ? loginId : "elena@ollacercana.com",
       phone: "3001234567",
       phoneVerified: true,
-      role: loginRole,
+      role: isAdminRole ? "admin" : isCocineraRole ? "cocinera" : "comprador",
       commercialName: "Cocina de Doña Elena",
       bio: "Especialidad en guisos tradicionales a fuego lento y repostería artesanal.",
       residentialComplex: "Torres del Norte - Apto 302",
@@ -274,47 +261,6 @@ export default function CuentaPage() {
                   placeholder="ej: usuario@ollacercana.com"
                   className="w-full bg-black/50 border border-white/20 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-500 focus:border-[#F0822D] focus:ring-1 focus:ring-[#F0822D] outline-none transition-all"
                 />
-              </div>
-
-              <div className="space-y-1.5 text-left">
-                <label className="text-xs uppercase font-bold tracking-wider text-stone-300">
-                  Ingresar como
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setLoginRole("comprador")}
-                    className={`py-2 px-2 rounded-xl border text-[11px] font-bold transition-all cursor-pointer ${
-                      loginRole === "comprador"
-                        ? "bg-[#62B869]/20 border-[#62B869] text-[#62B869]"
-                        : "bg-black/40 border-white/20 text-stone-400 hover:text-stone-200"
-                    }`}
-                  >
-                    Comprador
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setLoginRole("cocinera")}
-                    className={`py-2 px-2 rounded-xl border text-[11px] font-bold transition-all cursor-pointer ${
-                      loginRole === "cocinera"
-                        ? "bg-[#F0822D]/20 border-[#F0822D] text-[#F0822D]"
-                        : "bg-black/40 border-white/20 text-stone-400 hover:text-stone-200"
-                    }`}
-                  >
-                    Cocinera
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setLoginRole("admin")}
-                    className={`py-2 px-2 rounded-xl border text-[11px] font-bold transition-all cursor-pointer ${
-                      loginRole === "admin"
-                        ? "bg-purple-500/20 border-purple-500 text-purple-300"
-                        : "bg-black/40 border-white/20 text-stone-400 hover:text-stone-200"
-                    }`}
-                  >
-                    Admin
-                  </button>
-                </div>
               </div>
 
               <div className="space-y-1.5 text-left">

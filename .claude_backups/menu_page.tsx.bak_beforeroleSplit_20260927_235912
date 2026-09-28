@@ -326,7 +326,7 @@ export default function MenuPage() {
               <span>Cocinas cercanas</span>
             </Link>
             <Link
-              href="/cuenta/reservas"
+              href="/cuenta"
               className="flex items-center gap-1.5 hover:text-[#C84B31] transition-colors"
             >
               <ClipboardList className="w-3.5 h-3.5" />
@@ -351,7 +351,7 @@ export default function MenuPage() {
 
             {/* User Profile */}
             <Link
-              href="/cuenta/perfil"
+              href="/cuenta"
               className="flex items-center gap-2 p-1 pl-1.5 pr-2.5 rounded-full bg-stone-100 border border-stone-200 text-xs font-semibold text-stone-700 hover:bg-stone-200/60 transition-colors"
             >
               <div className="w-7 h-7 rounded-full overflow-hidden relative border border-stone-300">
